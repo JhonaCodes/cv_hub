@@ -11,8 +11,11 @@ class StandardCV extends StatelessWidget {
         Container(
           height: 120,
           width: double.infinity,
-          color: Colors.blue,
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.blue,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -22,7 +25,7 @@ class StandardCV extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text("Juan Pérez", style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),),
-                  Text("Desarrollador Web Full Stack"),
+                  Text("Desarrollador Web Full Stack", style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white), ),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
