@@ -1,5 +1,5 @@
 import 'package:cvhub/ui/layout/main_layout.dart';
-import 'package:cvhub/ui/screen/home.dart';
+
 import 'package:flutter/material.dart';
 import 'package:cvhub/ui/screen/standard_cv.dart'; //mi nueva cv (andres)
 

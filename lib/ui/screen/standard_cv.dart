@@ -1,3 +1,8 @@
+import 'package:cvhub/infrastructure/api_service.dart';
+import 'package:cvhub/model/cv_serializer.dart';
+import 'package:cvhub/repository/cv_repository.dart';
+import 'package:cvhub/ui/widget/custom_pill.dart';
+import 'package:cvhub/ui/widget/section_listtile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:cvhub/ui/widget/custom_elevated_button.dart';
 
@@ -6,171 +11,197 @@ class StandardCV extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header Section (Already implemented)
-          Container(
-            height: 120,
-            width: double.infinity,
-            padding: const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: Colors.blue,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
+
+    final size = MediaQuery.sizeOf(context);
+
+    return FutureBuilder(
+      future: CVRepository.userData(),
+      builder: (context, asyncSnapshot){
+
+        if(asyncSnapshot.hasData){
+          final CvSerializer? userData = asyncSnapshot.data;
+
+          return userData != null ? SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                  maxWidth: size.width <= 450 ? size.width : size.width * 0.8,
+                  minWidth: 200,
+              ),
+              child: Center(
+                child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      "Juan Pérez",
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge
-                          ?.copyWith(color: Colors.white),
+                    // Header Section (Already implemented)
+                    Container(
+                      height: 120,
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.blue,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                userData.personalInfo.name,
+                                style: Theme.of(context).textTheme
+                                    .titleLarge
+                                    ?.copyWith(color: Colors.white),
+                              ),
+                              Text(
+                                userData.personalInfo.title,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge
+                                    ?.copyWith(color: Colors.white),
+                              ),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  CustomElevatedButton(
+                                    label: "Descargar CV",
+                                    icon: const Icon(Icons.download, size: 20),
+                                    onTap: () {},
+                                  ),
+                                  const SizedBox(width: 10),
+                                  CustomElevatedButton(
+                                    label: "Contactar",
+                                    icon: const Icon(Icons.email, size: 20),
+                                    onTap: () {},
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                          const CircleAvatar(
+                            minRadius: 50,
+                          ),
+                        ],
+                      ),
                     ),
-                    Text(
-                      "Desarrollador Web Full Stack",
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelLarge
-                          ?.copyWith(color: Colors.white),
+
+                    // Contact Information
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 16),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          _ContactItem(
+                            icon: Icons.email,
+                            text: userData.personalInfo.email,
+                          ),
+                          _ContactItem(
+                            icon: Icons.phone,
+                            text: userData.personalInfo.phone,
+                          ),
+                          _ContactItem(
+                            icon: Icons.location_on,
+                            text: userData.personalInfo.location.country,
+                          ),
+                        ],
+                      ),
                     ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CustomElevatedButton(
-                          label: "Descargar CV",
-                          icon: const Icon(Icons.download, size: 20),
-                          onTap: () {},
-                        ),
-                        const SizedBox(width: 10),
-                        CustomElevatedButton(
-                          label: "Contactar",
-                          icon: const Icon(Icons.email, size: 20),
-                          onTap: () {},
-                        ),
-                      ],
-                    )
+
+                    // Professional Summary
+                    SectionListTileWidget(
+                      title: "Perfil Profesional",
+                      content: userData.professionalProfile.summary,
+                    ),
+
+                    SectionListTileWidget(
+                        title: "Experiencia Laboral",
+                        subTitle: "Tech Solutions Inc.",
+                        subtitleContent: "Desarrollador Senior",
+                        subTitleTrailing: "2020 - Presente",
+                        contentList: [
+                          "Lideré un equipo de 5 desarrolladores",
+                          "Incrementé la eficiencia del proceso en un 40% iwuehgf iweugfwhe fuwyegfuw",
+                          "Implementé CI/CD reduciendo tiempos de despliegue",
+                        ],
+                    ),
+
+                    SectionListTileWidget(
+                      title: "Educación",
+                      subTitle: "Universidad Técnica",
+                      subTitleTrailing: "2012 - 2016",
+                      subtitleContent: "Ingeniería en Sistemas",
+                    ),
+                    SectionListTileWidget(
+                      title: "Habilidades",
+                      subTitle: "Técnicas",
+                      pillSections: userData.skills.technical,
+                    ),
+
+                    //_SectionTitle(title: "Habilidades"),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 16),
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: [
+                    //       const Text(
+                    //         "Técnicas",
+                    //         style: TextStyle(fontWeight: FontWeight.bold),
+                    //       ),
+                    //       Wrap(
+                    //         spacing: 8,
+                    //         runSpacing: 8,
+                    //         children: [
+                    //           "JavaScript",
+                    //           "React",
+                    //           "Node.js",
+                    //           "Python",
+                    //           "AWS",
+                    //           "Docker"
+                    //         ].map((skill) => _SkillChip(skill)).toList(),
+                    //       ),
+                    //       const SizedBox(height: 16),
+                    //       const Text(
+                    //         "Blandas",
+                    //         style: TextStyle(fontWeight: FontWeight.bold),
+                    //       ),
+                    //       Wrap(
+                    //         spacing: 8,
+                    //         runSpacing: 8,
+                    //         children: [
+                    //           "Liderazgo",
+                    //           "Comunicación",
+                    //           "Trabajo en equipo",
+                    //           "Resolución de problemas"
+                    //         ].map((skill) => _SkillChip(skill)).toList(),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+
+                    const SizedBox(height: 16),
                   ],
                 ),
-                const CircleAvatar(
-                  minRadius: 50,
-                ),
-              ],
+              ),
             ),
-          ),
+          ) : Text("User is null");
+        }
 
-          // Contact Information
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 16),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _ContactItem(
-                  icon: Icons.email,
-                  text: "juan.perez@email.com",
-                ),
-                _ContactItem(
-                  icon: Icons.phone,
-                  text: "+1234567890",
-                ),
-                _ContactItem(
-                  icon: Icons.location_on,
-                  text: "Ciudad, País",
-                ),
-              ],
-            ),
-          ),
 
-          // Professional Summary
-          _SectionTitle(title: "Perfil Profesional"),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Text(
-              "Desarrollador Full Stack con más de 5 años de experiencia en desarrollo web. "
-                  "Especializado en React, Node.js y tecnologías cloud. Apasionado por crear "
-                  "soluciones escalables y liderar equipos técnicos.",
-            ),
-          ),
 
-          // Experience
-          _SectionTitle(title: "Experiencia Laboral"),
-          _ExperienceItem(
-            company: "Tech Solutions Inc.",
-            position: "Desarrollador Senior",
-            period: "2020 - Presente",
-            achievements: [
-              "Lideré un equipo de 5 desarrolladores",
-              "Incrementé la eficiencia del proceso en un 40%",
-              "Implementé CI/CD reduciendo tiempos de despliegue",
-            ],
-          ),
+        if(asyncSnapshot.hasError) return Text("Error");
 
-          // Education
-          _SectionTitle(title: "Educación"),
-          _EducationItem(
-            institution: "Universidad Técnica",
-            degree: "Ingeniería en Sistemas",
-            period: "2012 - 2016",
-          ),
-
-          // Skills
-          _SectionTitle(title: "Habilidades"),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Técnicas",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    "JavaScript",
-                    "React",
-                    "Node.js",
-                    "Python",
-                    "AWS",
-                    "Docker"
-                  ].map((skill) => _SkillChip(skill)).toList(),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  "Blandas",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    "Liderazgo",
-                    "Comunicación",
-                    "Trabajo en equipo",
-                    "Resolución de problemas"
-                  ].map((skill) => _SkillChip(skill)).toList(),
-                ),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 16),
-        ],
-      ),
+        return CircularProgressIndicator();
+      },
     );
+
+
   }
 }
 
@@ -187,9 +218,9 @@ class _SectionTitle extends StatelessWidget {
       child: Text(
         title,
         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-          color: Colors.blue,
-          fontWeight: FontWeight.bold,
-        ),
+              color: Colors.blue,
+              fontWeight: FontWeight.bold,
+            ),
       ),
     );
   }
@@ -250,7 +281,7 @@ class _ExperienceItem extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           ...achievements.map(
-                (achievement) => Padding(
+            (achievement) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 2),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -300,28 +331,6 @@ class _EducationItem extends StatelessWidget {
             style: TextStyle(color: Colors.blue[700]),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _SkillChip extends StatelessWidget {
-  final String label;
-
-  const _SkillChip(this.label);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.blue[50],
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.blue[100]!),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(color: Colors.blue[700], fontSize: 12),
       ),
     );
   }
