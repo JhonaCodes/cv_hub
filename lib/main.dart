@@ -3,10 +3,11 @@ import 'package:cvhub/ui/screen/home.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
   const MyApp({super.key});
 
   @override
@@ -20,9 +21,7 @@ class MyApp extends StatelessWidget {
       home: MainLayout(
         child: StandardCV(),
       )
+
     );
   }
 }
-
-
-
