@@ -1,8 +1,11 @@
 import 'package:cvhub/ui/widget/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 
-class StandardCV extends StatelessWidget {
-  const StandardCV({super.key});
+
+class StandardCV1 extends StatelessWidget {
+  const StandardCV1({super.key});
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +59,14 @@ class StandardCV extends StatelessWidget {
               ),
             ],
           ),
-        )
+        ),
+        const SizedBox(height: 20), // Espacio entre el CV y el botón
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/standard_cv'); // Navega a nueva cv
+          },
+          child: const Text("CV ANDRES"), // Texto del botón
+        ),
       ],
     );
   }
