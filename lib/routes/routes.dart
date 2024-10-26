@@ -1,4 +1,5 @@
 import 'package:cvhub/ui/layout/main_layout.dart';
+import 'package:cvhub/ui/screen/home.dart';
 import 'package:cvhub/ui/screen/standard_cv.dart';
 
 import 'package:go_router/go_router.dart';
@@ -14,13 +15,14 @@ class Routes{
 
               GoRoute(
                 path: '/',
-                builder: (context, state){
-                  return StandardCV();
-                }
+                builder: (context, state) => const HomePage()
               ),
 
 
-
+              GoRoute(
+                  path: '/my-profile',
+                  builder: (context, state) => StandardCV()
+              ),
 
             ],
             
@@ -29,9 +31,5 @@ class Routes{
         ]
     );
 
-    // return {
-    //   '/' : (context) => StandardCV(),
-    //   '/text' : (context) => Text("Route text")
-    // };
   }
 }

@@ -15,7 +15,15 @@ class MainLayout extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.all(2.0),
           child: child,
-        )
+        ),
+
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blueAccent,
+        child: const Icon(Icons.add, color: Colors.white,),
+        onPressed: (){
+          print("on FloatingActionButton");
+        },
+      ),
     );
   }
 }
