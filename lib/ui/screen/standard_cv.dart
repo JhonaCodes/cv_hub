@@ -165,6 +165,9 @@ class StandardCV extends StatelessWidget {
 
                     const SizedBox(height: 20),
 
+                    OutlinedButton(onPressed: (){
+                      Navigator.pushNamed(context, '/text');
+                    }, child: Text("Navigate"))
 
 
                   ],
