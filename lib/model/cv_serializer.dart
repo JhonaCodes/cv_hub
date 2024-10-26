@@ -362,7 +362,7 @@ class ProfessionalProfile {
 
 class Skills {
   final List<String> technical;
-  final List<dynamic> soft;
+  final List<String> soft;
 
   Skills({
     required this.technical,
@@ -371,7 +371,7 @@ class Skills {
 
   Skills copyWith({
     List<String>? technical,
-    List<dynamic>? soft,
+    List<String>? soft,
   }) =>
       Skills(
         technical: technical ?? this.technical,
@@ -384,7 +384,7 @@ class Skills {
 
   factory Skills.fromJson(Map<String, dynamic> json) => Skills(
     technical: List<String>.from(json["technical"].map((x) => x)),
-    soft: List<dynamic>.from(json["soft"].map((x) => x)),
+    soft: List<String>.from(json["soft"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {

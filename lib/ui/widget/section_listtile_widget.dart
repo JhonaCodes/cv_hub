@@ -5,34 +5,38 @@ import 'package:flutter/material.dart';
 import 'custom_pill.dart';
 
 class SectionListTileWidget extends StatelessWidget {
-  final String title;
+  final String? title;
   final String? content;
   final String? subTitle;
   final String? subtitleContent;
   final String? subTitleTrailing;
   final List<String>? contentList;
   final List<String>? pillSections;
+  final EdgeInsets? contentPadding;
   const SectionListTileWidget({
     super.key,
-    required this.title,
+    this.title,
     this.content,
     this.subTitle,
     this.contentList,
     this.subTitleTrailing,
     this.subtitleContent,
-    this.pillSections
+    this.pillSections,
+    this.contentPadding
   });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(
-        title,
+      title: title != null ? Text(
+        title!,
         style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: Colors.blue,
               fontWeight: FontWeight.bold,
             ),
-      ),
+      ) : null,
+      contentPadding: contentPadding,
+      minVerticalPadding: 0,
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -64,6 +68,7 @@ class SectionListTileWidget extends StatelessWidget {
             ),
           if(pillSections != null) Wrap(
           spacing: 10,
+          runSpacing: 5.0,
           children: [
             ...pillSections!.map((pill) => CustomPill(label: pill,))
           ],
