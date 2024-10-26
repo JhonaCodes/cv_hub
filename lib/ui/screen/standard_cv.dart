@@ -3,6 +3,7 @@ import 'package:cvhub/model/cv_serializer.dart';
 import 'package:cvhub/repository/cv_repository.dart';
 import 'package:cvhub/ui/widget/custom_pill.dart';
 import 'package:cvhub/ui/widget/section_listtile_widget.dart';
+import 'package:cvhub/ui/widget/section_with_only_title.dart';
 import 'package:flutter/material.dart';
 import 'package:cvhub/ui/widget/custom_elevated_button.dart';
 
@@ -32,6 +33,7 @@ class StandardCV extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+
                     // Header Section (Already implemented)
                     Container(
                       height: 120,
@@ -87,6 +89,7 @@ class StandardCV extends StatelessWidget {
                       ),
                     ),
 
+
                     // Contact Information
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 16),
@@ -120,17 +123,25 @@ class StandardCV extends StatelessWidget {
                       content: userData.professionalProfile.summary,
                     ),
 
-                    SectionListTileWidget(
-                        title: "Experiencia Laboral",
-                        subTitle: "Tech Solutions Inc.",
-                        subtitleContent: "Desarrollador Senior",
-                        subTitleTrailing: "2020 - Presente",
-                        contentList: [
-                          "Lideré un equipo de 5 desarrolladores",
-                          "Incrementé la eficiencia del proceso en un 40% iwuehgf iweugfwhe fuwyegfuw",
-                          "Implementé CI/CD reduciendo tiempos de despliegue",
-                        ],
+                    const SizedBox(height: 20,),
+
+                    SectionWithOnlyTitle(
+                      title: "Experiencia Laboral",
+                      children: [
+                        ...userData.workExperience.map((exp) =>  Padding(
+                          padding: const EdgeInsets.only(bottom: 10.0),
+                          child: SectionListTileWidget(
+                            subTitle: exp.company,
+                            subtitleContent: exp.position,
+                            subTitleTrailing: "${exp.period.start} - ${exp.period.end}",
+                            contentList: [...exp.achievements],
+                          ),
+                        ),
+                        )
+                      ],
                     ),
+
+                    const SizedBox(height: 10,),
 
                     SectionListTileWidget(
                       title: "Educación",
@@ -138,54 +149,24 @@ class StandardCV extends StatelessWidget {
                       subTitleTrailing: "2012 - 2016",
                       subtitleContent: "Ingeniería en Sistemas",
                     ),
-                    SectionListTileWidget(
-                      title: "Habilidades",
-                      subTitle: "Técnicas",
+
+                    const SizedBox(height: 20,),
+
+                    if(userData.skills.technical.isNotEmpty)SectionListTileWidget(
+                      title: "Habilidades técnicas",
                       pillSections: userData.skills.technical,
                     ),
 
-                    //_SectionTitle(title: "Habilidades"),
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 16),
-                    //   child: Column(
-                    //     crossAxisAlignment: CrossAxisAlignment.start,
-                    //     children: [
-                    //       const Text(
-                    //         "Técnicas",
-                    //         style: TextStyle(fontWeight: FontWeight.bold),
-                    //       ),
-                    //       Wrap(
-                    //         spacing: 8,
-                    //         runSpacing: 8,
-                    //         children: [
-                    //           "JavaScript",
-                    //           "React",
-                    //           "Node.js",
-                    //           "Python",
-                    //           "AWS",
-                    //           "Docker"
-                    //         ].map((skill) => _SkillChip(skill)).toList(),
-                    //       ),
-                    //       const SizedBox(height: 16),
-                    //       const Text(
-                    //         "Blandas",
-                    //         style: TextStyle(fontWeight: FontWeight.bold),
-                    //       ),
-                    //       Wrap(
-                    //         spacing: 8,
-                    //         runSpacing: 8,
-                    //         children: [
-                    //           "Liderazgo",
-                    //           "Comunicación",
-                    //           "Trabajo en equipo",
-                    //           "Resolución de problemas"
-                    //         ].map((skill) => _SkillChip(skill)).toList(),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
+                    if(userData.skills.soft.isNotEmpty) SectionListTileWidget(
+                      title: "Habilidades blandas",
+                      pillSections: userData.skills.soft,
+                    ),
 
-                    const SizedBox(height: 16),
+
+                    const SizedBox(height: 20),
+
+
+
                   ],
                 ),
               ),
@@ -195,7 +176,12 @@ class StandardCV extends StatelessWidget {
 
 
 
-        if(asyncSnapshot.hasError) return Text("Error");
+        if(asyncSnapshot.hasError){
+
+          print(asyncSnapshot.error.toString());
+          print(asyncSnapshot.stackTrace.toString());
+          return Text("Error");
+        }
 
         return CircularProgressIndicator();
       },
