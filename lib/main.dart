@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:cvhub/ui/screen/standard_cv.dart'; //mi nueva cv (andres)
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'CV Hub',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -25,3 +26,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+/// Gestor de estado: Riverpod + Viewmodel(Repository)
+/// Guardar localmente con sqflite -> Guardar contacto, eliminar contacto, edit url contacto, refresh
+/// Guardar shared preferences.
