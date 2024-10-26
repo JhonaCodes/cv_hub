@@ -1,3 +1,4 @@
+import 'package:cvhub/routes/routes.dart';
 import 'package:flutter/material.dart';
 
 class MainLayout extends StatelessWidget {
@@ -34,6 +35,24 @@ class _CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer();
+    return Drawer(
+      child: Column(
+        children: [
+          Container(
+           height: 170,
+           width: double.infinity,
+           color: Colors.blue,
+          ),
+          const Divider(),
+          ListTile(
+            leading: Icon(Icons.account_circle),
+            title: Text("Datos de usuario"),
+            onTap: () {
+              Routes.push(context, Navigate.myProfile);
+            },
+          )
+        ],
+      ),
+    );
   }
 }

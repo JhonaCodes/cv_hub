@@ -2,6 +2,7 @@ import 'package:cvhub/infrastructure/api_service.dart';
 import 'package:cvhub/model/cv_serializer.dart';
 import 'package:cvhub/repository/cv_repository.dart';
 import 'package:cvhub/ui/widget/custom_pill.dart';
+import 'package:cvhub/ui/widget/cv_format_actions.dart';
 import 'package:cvhub/ui/widget/section_listtile_widget.dart';
 import 'package:cvhub/ui/widget/section_with_only_title.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +35,11 @@ class StandardCV extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
 
+                    CvFormatActions(),
+
                     // Header Section (Already implemented)
                     Container(
-                      height: 120,
+                      height: 100,
                       width: double.infinity,
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
@@ -64,26 +67,11 @@ class StandardCV extends StatelessWidget {
                                     .labelLarge
                                     ?.copyWith(color: Colors.white),
                               ),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  CustomElevatedButton(
-                                    label: "Descargar CV",
-                                    icon: const Icon(Icons.download, size: 20),
-                                    onTap: () {},
-                                  ),
-                                  const SizedBox(width: 10),
-                                  CustomElevatedButton(
-                                    label: "Contactar",
-                                    icon: const Icon(Icons.email, size: 20),
-                                    onTap: () {},
-                                  ),
-                                ],
-                              )
+
                             ],
                           ),
                           const CircleAvatar(
-                            minRadius: 50,
+                            minRadius: 40,
                           ),
                         ],
                       ),
@@ -164,10 +152,6 @@ class StandardCV extends StatelessWidget {
 
 
                     const SizedBox(height: 20),
-
-                    OutlinedButton(onPressed: (){
-                      Navigator.pushNamed(context, '/text');
-                    }, child: Text("Navigate"))
 
 
                   ],
